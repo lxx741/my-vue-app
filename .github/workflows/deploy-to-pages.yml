@@ -1,0 +1,36 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 在 main 分支提交时触发工作流
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: 检出代码
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Step 3: 安装依赖
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: 构建项目
+      - name: Build Project
+        run: npm run build
+
+      # Step 5: 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub 提供的内置令牌
+          publish_dir: ./dist # 构建输出的目录
